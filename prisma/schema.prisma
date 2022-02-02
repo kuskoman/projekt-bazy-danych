@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  uuid           String @id @default(uuid()) @db.NChar(36)
+  passwordDigest String @map("password_digest") @db.NVarChar(60)
+  name           String
+  email          String @db.NVarChar(128)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  ChallengeInvite        ChallengeInvite[]
+  ChallengeParticipation ChallengeParticipation[]
+  @@map("users")
+}
+
+model Language {
+  name String
+  code String @id @db.NVarChar(3)
+  Word Word[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([name])
+  @@map("languages")
+}
+
+model Word {
+  word         String      @db.NVarChar(100)
+  length       Int
+  languageCode String      @map("language_code") @db.NVarChar(3)
+  language     Language    @relation(fields: [languageCode], references: [code], onDelete: Cascade, onUpdate: Cascade)
+  Challenge    Challenge[]
+
+  @@id([word, languageCode])
+  @@index([length, word, languageCode])
+  @@map("words")
+}
+
+model Challenge {
+  uuid             String                   @id @default(uuid()) @db.NChar(36)
+  word             Word                     @relation(fields: [wordContent, wordLanguageCode], references: [word, languageCode])
+  wordContent      String                   @map("word_content") @db.NVarChar(100)
+  wordLanguageCode String                   @map("word_language_code") @db.NVarChar(3)
+  challengeTypeId  Int
+  type             ChallengeType            @relation(fields: [challengeTypeId], references: [id])
+  participations   ChallengeParticipation[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  ChallengeInvite ChallengeInvite[]
+  @@map("challenges")
+}
+
+model ChallengeType {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.NVarChar(72)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Challenge Challenge[]
+  @@map("challenge_types")
+}
+
+model ChallengeParticipation {
+  challenge     Challenge @relation(fields: [challengeUuid], references: [uuid], map: "user_solutions_challenge_uuid_fkey")
+  challengeUuid String    @map("challenge_uuid") @db.NChar(36)
+  user          User      @relation(fields: [userUuid], references: [uuid], map: "user_solutions_user_uuid_fkey")
+  userUuid      String    @map("user_uuid") @db.NChar(36)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  ChallengeSolution ChallengeSolution[]
+  @@id([challengeUuid, userUuid])
+  @@map("challenge_participations")
+}
+
+model ChallengeSolution {
+  guess         String                 @db.NVarChar(100)
+  participation ChallengeParticipation @relation(fields: [challengeUuid, userUuid], references: [challengeUuid, userUuid])
+  challengeUuid String                 @map("challenge_uuid") @db.NChar(36)
+  userUuid      String                 @map("user_uuid") @db.NChar(36)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([challengeUuid, userUuid, guess])
+  @@map("challenge_solutions")
+}
+
+model ChallengeInvite {
+  uuid              String    @id @default(uuid()) @db.NChar(36)
+  acceptedTimestamp DateTime? @map("accepted_timestamp")
+  userUuid          String    @map("user_uuid") @db.NChar(36)
+  user              User      @relation(fields: [userUuid], references: [uuid], map: "notifications_user_uuid_fkey")
+  challenge         Challenge @relation(fields: [challengeUuid], references: [uuid])
+
+  challengeUuid String @db.NChar(36)
+  @@map("challenge_invites")
+}
