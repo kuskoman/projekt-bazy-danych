@@ -1,4 +1,5 @@
 import { seedChallenges } from './challenge';
+import { seedChallengeParticipations } from './challengeParticipation';
 import { seedChallengeTypes } from './challengeType';
 import { seedLanguages } from './languages';
 import { seedUsers } from './users';
@@ -9,7 +10,8 @@ const main = async () => {
   await seedLanguages();
   const { polishWords, englishWords } = await seedWords();
   const challengeTypeIds = await seedChallengeTypes();
-  await seedChallenges({ englishWords, polishWords, challengeTypeIds });
+  const challenges = await seedChallenges({ englishWords, polishWords, challengeTypeIds });
+  await seedChallengeParticipations({ challenges, users });
 };
 
 main();

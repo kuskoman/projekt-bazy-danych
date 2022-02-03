@@ -22,6 +22,5 @@ export const seedUsers = async () => {
   }
 
   await prisma.user.createMany({ data: users });
-
-  return users;
+  return await prisma.user.findMany();
 };

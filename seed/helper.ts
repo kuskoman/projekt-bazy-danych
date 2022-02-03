@@ -20,3 +20,8 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 };
 
 export const randomString = () => (Math.random() + 1).toString(36);
+
+/** Inclusive */
+export const randomNumberBetween = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};

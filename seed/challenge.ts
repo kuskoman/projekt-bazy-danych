@@ -40,6 +40,7 @@ export const seedChallenges = async ({
   }
 
   await prisma.challenge.createMany({ data: challenges });
+  return await prisma.challenge.findMany();
 };
 
 interface SeedChallengesInput {
