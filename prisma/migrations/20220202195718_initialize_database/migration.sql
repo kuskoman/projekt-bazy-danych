@@ -75,7 +75,7 @@ CREATE TABLE [dbo].[challenge_invites] (
     [uuid] NCHAR(36) NOT NULL,
     [accepted_timestamp] DATETIME2,
     [user_uuid] NCHAR(36) NOT NULL,
-    [challengeUuid] NCHAR(36) NOT NULL,
+    [challenge_uuid] NCHAR(36) NOT NULL,
     CONSTRAINT [challenge_invites_pkey] PRIMARY KEY ([uuid])
 );
 
@@ -104,7 +104,7 @@ ALTER TABLE [dbo].[challenge_solutions] ADD CONSTRAINT [challenge_solutions_chal
 ALTER TABLE [dbo].[challenge_invites] ADD CONSTRAINT [notifications_user_uuid_fkey] FOREIGN KEY ([user_uuid]) REFERENCES [dbo].[users]([uuid]) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE [dbo].[challenge_invites] ADD CONSTRAINT [challenge_invites_challengeUuid_fkey] FOREIGN KEY ([challengeUuid]) REFERENCES [dbo].[challenges]([uuid]) ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE [dbo].[challenge_invites] ADD CONSTRAINT [challenge_invites_challenge_uuid_fkey] FOREIGN KEY ([challenge_uuid]) REFERENCES [dbo].[challenges]([uuid]) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 COMMIT TRAN;
 

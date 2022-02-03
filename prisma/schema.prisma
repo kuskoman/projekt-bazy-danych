@@ -105,6 +105,6 @@ model ChallengeInvite {
   user              User      @relation(fields: [userUuid], references: [uuid], map: "notifications_user_uuid_fkey")
   challenge         Challenge @relation(fields: [challengeUuid], references: [uuid])
 
-  challengeUuid String @db.NChar(36)
+  challengeUuid String @db.NChar(36) @map("challenge_uuid")
   @@map("challenge_invites")
 }
