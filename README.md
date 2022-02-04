@@ -249,3 +249,96 @@ SELECT TOP 10 * FROM challenges WHERE [word_language_code] = 'en' ORDER BY [crea
 ```
 
 Zwraca 10 najnowszych wyzwań dla języka angielskiego.
+
+---
+
+```sql
+SELECT [word_language_code], COUNT(*) as [count]
+FROM [dbo].[challenge_solutions]
+LEFT JOIN [dbo].[challenges]
+ON [challenges].[uuid] = [challenge_solutions].[challenge_uuid]
+WHERE [challenge_solutions].[guess] = [challenges].[word_content] 
+GROUP BY [word_language_code];
+```
+
+Zwraca liczbę poprawnych odpowiedzi dla każdego języka.
+
+---
+
+```sql
+SELECT ROUTINE_NAME, ROUTINE_TYPE FROM INFORMATION_SCHEMA.ROUTINES
+```
+
+Zwraca listę dodanych funkcji i procedur.
+
+---
+
+```sql
+SELECT * FROM users WHERE email LIKE '%k%';
+```
+
+Zwraca listę użytkowników, którzy mają literę `k` w adresie email.
+
+---
+
+```sql
+SELECT TOP 11 user_uuid, COUNT(*) as participations_count
+FROM users RIGHT JOIN challenge_participations
+ON users.uuid = challenge_participations.user_uuid
+GROUP BY user_uuid
+ORDER BY participations_count ASC;
+```
+
+Zwraca 11 użytkowników z najmniejszą liczbą partycypacji w wyzwaniach.
+
+---
+
+```sql
+SELECT TOP 5 *
+FROM users_by_challenge_count('en') AS challenge_users
+LEFT JOIN users ON challenge_users.user_uuid = users.uuid
+ORDER BY challenge_count DESC;
+```
+
+Zwraca 5 użytkowników z nawiększą liczbą partycypacji w wyzwaniach w języku angielskim;
+
+---
+
+```sql
+SELECT * FROM challenge_invites
+WHERE accepted_timestamp < DATEADD(day, -1, CAST(GETDATE() AS date));
+```
+
+Zwraca wszystkie zaproszenia do gry zaakceptowane wcześniej niż wczoraj.
+
+---
+
+```sql
+SELECT * FROM challenges WHERE word_content LIKE 'a%a';
+```
+
+Zwraca wszystkie wyzwania, w których słowo zaczyna i kończy się na `a`
+
+---
+
+```sql
+SELECT session_id FROM sys.dm_exec_requests WHERE connection_id IS NOT NULL;
+```
+
+Zwraca identyfikator sesji dla transakcji wywołanych przez użytkownika (lub aplikację połączoną z bazą).
+
+---
+
+```sql
+DECLARE @query_start bigint
+DECLARE @query_end bigint 
+SELECT @query_start=(SELECT DATEDIFF_BIG(ms, '1970-01-01 00:00:00', GETUTCDATE()))
+
+EXEC start_game 'pl', 1
+
+SELECT @query_end=(SELECT DATEDIFF_BIG(ms, '1970-01-01 00:00:00', GETUTCDATE()))
+
+SELECT @query_end - @query_start AS time_to_start_game_in_milliseconds
+```
+
+Zwraca czas tworzenia nowej gry (w milisekundach) (oraz tworzy nową grę)
