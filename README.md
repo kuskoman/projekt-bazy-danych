@@ -342,3 +342,46 @@ SELECT @query_end - @query_start AS time_to_start_game_in_milliseconds
 ```
 
 Zwraca czas tworzenia nowej gry (w milisekundach) (oraz tworzy nową grę)
+
+## Uruchamianie projektu
+
+Projekt został napisany z pomocą narzędzia [Prisma](https://www.prisma.io/),
+oraz języka TypeScript, który pozwolił stowrzyć narzędzie zapełniające bazę przykładowymi danymi.
+Projekt zawiera definicję bazy danych w pliku [docker-compose.yml](./docker-compose.yml),
+która pozwala uruchomić projekt bez konieczności instalowania bazy danych Microsoft SQL Server na systemie
+hosta komputera.
+
+Projekt można uruchomić na 3 sposoby:
+
+- za pomocą bazy Microsoft SQL Server zainstalowanej na maszynie hosta, oraz pliku zawierającego
+    strukturę bazy danych, oraz zapełnionego przykładowymi wartościami
+
+- za pomocą bazy Microsoft SQL Server zainstalowanej na maszynie hosta, oraz narzędzi [Yarn](https://yarnpkg.com/)
+    oraz [Node.js](https://nodejs.org/en/) (rekomendowana wersja Node: 17.4.0)
+
+- za pomocą bazy danych w kontenerze Docker, oraz ww. narzędzi
+
+### Uruchamianie bazy z pliku zrzutu (najszybszy, rekomendowany)
+
+Sposób wymaga jedynie uruchomienia pliku [14009_jakub_surdej_gr_7.sql](14009_jakub_surdej_gr_7.sql).
+
+### Uruchamianie bazy za pomocą Node
+
+Sposób ten wymaga uzupełnienia connection stringa (w przypadku Dockera można posłużyć się komendą `cp .env.example .env`),
+oraz uruchomienia kolejno poleceń:
+
+```sh
+yarn
+yarn deploy
+yarn seed
+```
+
+### Uruchamianie bazy za pomocą Node i Dockera
+
+Wymaga uruchomienia bazy z pliku docker-compose za pomocą polecenia
+
+```sh
+docker-compose up -d
+```
+
+oraz wykonania poleceń z kroku wymienionego poprzednio.
