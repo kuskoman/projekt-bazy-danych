@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { seedChallenges } from './challenge';
 import { seedChallengeParticipations } from './challengeParticipation';
 import { seedChallengeSolutions } from './challengeSolution';

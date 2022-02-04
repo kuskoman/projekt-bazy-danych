@@ -47,11 +47,11 @@ model Word {
 
 model Challenge {
   uuid             String                   @id @default(uuid()) @db.NChar(36)
-  word             Word                     @relation(fields: [wordContent, wordLanguageCode], references: [word, languageCode])
+  word             Word                     @relation(fields: [wordContent, wordLanguageCode], references: [word, languageCode], onDelete: Cascade)
   wordContent      String                   @map("word_content") @db.NVarChar(100)
   wordLanguageCode String                   @map("word_language_code") @db.NVarChar(3)
   challengeTypeId  Int
-  type             ChallengeType            @relation(fields: [challengeTypeId], references: [id])
+  type             ChallengeType            @relation(fields: [challengeTypeId], references: [id], onDelete: Cascade)
   participations   ChallengeParticipation[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -73,9 +73,9 @@ model ChallengeType {
 }
 
 model ChallengeParticipation {
-  challenge     Challenge @relation(fields: [challengeUuid], references: [uuid], map: "user_solutions_challenge_uuid_fkey")
+  challenge     Challenge @relation(fields: [challengeUuid], references: [uuid], map: "user_solutions_challenge_uuid_fkey", onDelete: Cascade)
   challengeUuid String    @map("challenge_uuid") @db.NChar(36)
-  user          User      @relation(fields: [userUuid], references: [uuid], map: "user_solutions_user_uuid_fkey")
+  user          User      @relation(fields: [userUuid], references: [uuid], map: "user_solutions_user_uuid_fkey", onDelete: Cascade)
   userUuid      String    @map("user_uuid") @db.NChar(36)
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -88,7 +88,7 @@ model ChallengeParticipation {
 
 model ChallengeSolution {
   guess         String                 @db.NVarChar(100)
-  participation ChallengeParticipation @relation(fields: [challengeUuid, userUuid], references: [challengeUuid, userUuid])
+  participation ChallengeParticipation @relation(fields: [challengeUuid, userUuid], references: [challengeUuid, userUuid], onDelete: Cascade)
   challengeUuid String                 @map("challenge_uuid") @db.NChar(36)
   userUuid      String                 @map("user_uuid") @db.NChar(36)
 
@@ -102,9 +102,9 @@ model ChallengeInvite {
   uuid              String    @id @default(uuid()) @db.NChar(36)
   acceptedTimestamp DateTime? @map("accepted_timestamp")
   userUuid          String    @map("user_uuid") @db.NChar(36)
-  user              User      @relation(fields: [userUuid], references: [uuid], map: "notifications_user_uuid_fkey")
-  challenge         Challenge @relation(fields: [challengeUuid], references: [uuid])
+  user              User      @relation(fields: [userUuid], references: [uuid], map: "notifications_user_uuid_fkey", onDelete: Cascade)
+  challenge         Challenge @relation(fields: [challengeUuid], references: [uuid], onDelete: Cascade)
 
-  challengeUuid String @db.NChar(36) @map("challenge_uuid")
+  challengeUuid String @map("challenge_uuid") @db.NChar(36)
   @@map("challenge_invites")
 }
