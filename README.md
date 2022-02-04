@@ -6,6 +6,31 @@
 
 **Grupa laboratoryjna:** 7
 
+---
+
+- [Projekt bazy do gry komputerowej podobnej do wordle lub [literalnie.fun](https://literalnie.fun/)](#projekt-bazy-do-gry-komputerowej-podobnej-do-wordle-lub-literalniefun)
+  - [Opis bazy danych](#opis-bazy-danych)
+  - [Wykaz tabel](#wykaz-tabel)
+  - [Wykaz widoków](#wykaz-widoków)
+    - [random](#random)
+    - [scoreboard](#scoreboard)
+    - [popular_words](#popular_words)
+  - [Wykaz funkcji](#wykaz-funkcji)
+    - [get_random_word](#get_random_word)
+    - [users_by_challenge_count](#users_by_challenge_count)
+    - [solutions_for_lang](#solutions_for_lang)
+  - [Wykaz procedur](#wykaz-procedur)
+    - [insert_word](#insert_word)
+    - [start_game](#start_game)
+    - [drop_challenge_duplicates](#drop_challenge_duplicates)
+  - [Przykładowe instrukcje](#przykładowe-instrukcje)
+  - [Uruchamianie projektu](#uruchamianie-projektu)
+    - [Uruchamianie bazy z pliku zrzutu (najszybszy, rekomendowany)](#uruchamianie-bazy-z-pliku-zrzutu-najszybszy-rekomendowany)
+    - [Uruchamianie bazy za pomocą Node](#uruchamianie-bazy-za-pomocą-node)
+    - [Uruchamianie bazy za pomocą Node i Dockera](#uruchamianie-bazy-za-pomocą-node-i-dockera)
+
+---
+
 ## Opis bazy danych
 
 Zaprojektowana baza danych służy do przetrzymywania danych aplikacji podobnej do wymienionej w tytule gier.
