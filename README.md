@@ -4,7 +4,7 @@
 
 **Nr albumu:** 14009
 
-**Grupa laboratoryjna:** 7
+**Grupa laboratoryjna:** 21
 
 ---
 
