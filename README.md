@@ -4,7 +4,7 @@
 
 **Nr albumu:** 14009
 
-**Grupa laboratoryjna:** Lab 14
+**Grupa laboratoryjna:** Lab 14 (lab14/1/ISN)
 
 ---
 
